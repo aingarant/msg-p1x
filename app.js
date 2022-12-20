@@ -12,6 +12,23 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(morgan('dev'));
 
+// connect to db
+mongoose.connect(`mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASS}@msg-p1x.uh0wwox.mongodb.net/messages?retryWrites=true&w=majority`)
+  .then(() => {
+    console.log('connected to database')
+    // listen to port
+    app.listen(port, () => {
+      console.log('listening for requests on port', port)
+    })
+  })
+  .catch((err) => {
+    console.log(err)
+  })
+
+
+app.get("/", (req, res) => {
+  res.send("Hello World");
+});
 
 app.post('/', async (req, res) => {
 
@@ -47,26 +64,13 @@ app.post('/', async (req, res) => {
     };
   }
   try {
-    const message = await Message.create(msgObj)
-    console.log("inserted message", message)
+    const newMessage = await Message.create(msgObj)
+    console.log("inserted message", newMessage)
     res.status(200).send("OK")
   } catch (error) {
     console.log(error)
     res.status(400).send("Error")
   }
 });
-
-// connect to db
-mongoose.connect(`mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASS}@msg-p1x.uh0wwox.mongodb.net/messages?retryWrites=true&w=majority`)
-  .then(() => {
-    console.log('connected to database')
-    // listen to port
-    app.listen(port, () => {
-      console.log('listening for requests on port', port)
-    })
-  })
-  .catch((err) => {
-    console.log(err)
-  })
 
 module.exports = app;
