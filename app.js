@@ -1,4 +1,6 @@
+require("dotenv").config();
 const express = require('express');
+const morgan = require('morgan');
 const app = express();
 const port = process.env.PORT || 80;
 const mongoose = require("mongoose");
@@ -8,9 +10,8 @@ const Message = require('./models/messageModel');
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.get("/", (req, res) => {
-  res.send("Hello World");
-});
+app.use(morgan('dev'));
+
 
 app.post('/', async (req, res) => {
 
