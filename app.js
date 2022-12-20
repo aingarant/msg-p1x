@@ -56,10 +56,8 @@ app.post('/', async (req, res) => {
   }
 });
 
-
-
 // connect to db
-mongoose.connect(process.env.MONGO_URI)
+mongoose.connect(`mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASS}@msg-p1x.uh0wwox.mongodb.net/messages?retryWrites=true&w=majority`)
   .then(() => {
     console.log('connected to database')
     // listen to port
@@ -71,6 +69,4 @@ mongoose.connect(process.env.MONGO_URI)
     console.log(err)
   })
 
-
-
-  module.exports = app;
+module.exports = app;
