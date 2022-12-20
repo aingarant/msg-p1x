@@ -1,7 +1,7 @@
 {
   "name": "msg-p1x",
   "version": "1.0.0",
-  "main": "server.js",
+  "main": "app.js",
   "license": "MIT",
   "dependencies": {
     "express": "^4.18.2",
@@ -9,7 +9,7 @@
     "morgan": "^1.10.0"
   },
   "scripts": {
-    "start": "node server.js"
+    "start": "node app.js"
   },
   "devDependencies": {
     "dotenv": "^16.0.3"
