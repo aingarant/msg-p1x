@@ -3,6 +3,7 @@ const express = require('express');
 const app = express();
 const port = process.env.PORT || 80;
 const mongoose = require("mongoose");
+mongoose.set('strictQuery', true);
 const Message = require('./models/messageModel');
 
 app.use(express.json());
