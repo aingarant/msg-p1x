@@ -3,6 +3,7 @@ const express = require('express');
 const app = express();
 const mongoose = require("mongoose");
 const Message = require('./models/messageModel');
+const port = process.env.PORT || 80;
 
 
 app.use(express.json());
@@ -58,8 +59,8 @@ mongoose.connect(process.env.MONGO_URI)
   .then(() => {
     console.log('connected to database')
     // listen to port
-    app.listen(process.env.PORT, () => {
-      console.log('listening for requests on port', process.env.PORT)
+    app.listen(port, () => {
+      console.log('listening for requests on port', port)
     })
   })
   .catch((err) => {
