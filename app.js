@@ -1,19 +1,21 @@
 require("dotenv").config();
 const express = require('express');
 const morgan = require('morgan');
+const cors = require('cors');
 const app = express();
 const port = process.env.PORT || 3000;
 const mongoose = require("mongoose");
 mongoose.set('strictQuery', true);
 const Message = require('./models/messageModel');
 
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(morgan('dev'));
 
 // connect to db
-mongoose.connect(`mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASS}@msg-p1x.uh0wwox.mongodb.net/messages?retryWrites=true&w=majority`)
+mongoose.connect(`mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASS}@msg-p1x.dtwh2vm.mongodb.net/messages?retryWrites=true&w=majority`)
   .then(() => {
     console.log('connected to database')
     // listen to port
@@ -25,9 +27,42 @@ mongoose.connect(`mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PA
     console.log(err)
   })
 
-
 app.get("/", (req, res) => {
   res.send("Hello World");
+});
+
+
+app.get("/inbox", async (req, res) => {
+  try {
+    const messages = await Message.find()
+    res.status(200).json(messages);
+  } catch (error) {
+    console.log(error)
+    res.status(400).send("Error")
+  }
+});
+
+app.get("/thread/:id", async (req, res) => {
+
+  const sender = req.params.id.toString();
+
+  try {
+    const messages = await Message.distinct({ sender: sender })
+    res.status(200).json(messages);
+  } catch (error) {
+    console.log(error)
+    res.status(400).send("Error")
+  }
+});
+
+app.get("/number/:id", async (req, res) => {
+  try {
+    const messages = await Message.distinct({ sender: req.params.id })
+    res.status(200).json(messages);
+  } catch (error) {
+    console.log(error)
+    res.status(400).send("Error")
+  }
 });
 
 app.post('/', async (req, res) => {
