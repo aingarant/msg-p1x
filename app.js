@@ -65,6 +65,7 @@ app.get("/number/:id", async (req, res) => {
 })
 
 app.post("/", async (req, res) => {
+  console.log("req.body", req.body)
   let msgObj = {}
 
   // BulkVS SMS
