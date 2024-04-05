@@ -28,42 +28,6 @@ mongoose
     console.log(err)
   })
 
-app.get("/", (req, res) => {
-  res.send("Hello World")
-})
-
-app.get("/inbox", async (req, res) => {
-  try {
-    const messages = await Message.find()
-    res.status(200).json(messages)
-  } catch (error) {
-    console.log(error)
-    res.status(400).send("Error")
-  }
-})
-
-app.get("/thread/:id", async (req, res) => {
-  const sender = req.params.id.toString()
-
-  try {
-    const messages = await Message.distinct({ sender: sender })
-    res.status(200).json(messages)
-  } catch (error) {
-    console.log(error)
-    res.status(400).send("Error")
-  }
-})
-
-app.get("/number/:id", async (req, res) => {
-  try {
-    const messages = await Message.distinct({ sender: req.params.id })
-    res.status(200).json(messages)
-  } catch (error) {
-    console.log(error)
-    res.status(400).send("Error")
-  }
-})
-
 app.post("/", async (req, res) => {
   console.log("req.body", req.body)
   let msgObj = {}
